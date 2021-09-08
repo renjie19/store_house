@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "654303024466",
+    "project_id": "storehouse-930e4",
+    "storage_bucket": "storehouse-930e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654303024466:android:9d2accd35d778b4dbf568b",
+        "android_client_info": {
+          "package_name": "com.gania.renjie.store_house"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654303024466-0389uie7pc016pkfcre2p1bca0sein63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA8dSq5wFr4jHxOvchI1ukCdhOsEMNO-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654303024466-0389uie7pc016pkfcre2p1bca0sein63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
