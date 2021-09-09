@@ -11,6 +11,8 @@ class AuthService extends GetxService {
     super.onInit();
   }
 
+  User? get currentUser => _auth.currentUser;
+
   Future<User?> login(email, password) async {
     try {
       final UserCredential userCredential = await _auth
@@ -28,6 +30,15 @@ class AuthService extends GetxService {
           .createUserWithEmailAndPassword(email: email, password: password);
       print(userCredential);
       return userCredential.user;
+    } catch (e) {
+      showErrorMessage(e);
+    }
+  }
+
+  Future<void> updateUser({displayName = '', contactNumber = ''}) async {
+    try {
+      await _auth.currentUser?.updateDisplayName(displayName);
+      await _auth.currentUser?.updatePhoneNumber(contactNumber);
     } catch (e) {
       showErrorMessage(e);
     }

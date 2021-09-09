@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/typicons_icons.dart';
+import 'package:get/get.dart';
+import 'package:store_house/pages/create_item.dart';
 
 class ItemManagement extends StatelessWidget {
   static final String name = '/ITEM_MANAGEMENT';
@@ -11,7 +13,7 @@ class ItemManagement extends StatelessWidget {
           title: Text('Manage Items'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => Get.toNamed(CreateItem.name),
               icon: Icon(Typicons.plus_outline, color: Colors.white),
             )
           ],
