@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:get/get.dart';
+import 'package:store_house/controller/main_app_controller.dart';
+import 'package:store_house/util/notification_util.dart';
 
 class Register extends StatelessWidget {
   static final String name = '/REGISTER';
   final _formKey = GlobalKey<FormBuilderState>();
+  final MainAppController _mainAppController = Get.find();
+
+  Future<void> _register(BuildContext context) async {
+    try {
+      if(_formKey.currentState!.saveAndValidate()) {
+        Loader.show(context);
+        final data = _formKey.currentState!.value;
+        await _mainAppController.register(data['email'], data['password']);
+        Get.back();
+      }
+    } catch (errorMessage) {
+      showErrorMessage(errorMessage);
+    } finally {
+      Loader.hide();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +51,11 @@ class Register extends StatelessWidget {
                   obscureText: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                    FormBuilderValidators.equal(context,
-                        _formKey.currentState?.fields['confirmPassword']?.value)
-                  ]),
-                ),
-                FormBuilderTextField(
-                  name: 'confirmPassword',
-                  decoration: InputDecoration(labelText: 'Confirm Password'),
-                  obscureText: true,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                    FormBuilderValidators.equal(context,
-                        _formKey.currentState?.fields['password']?.value)
+                    FormBuilderValidators.required(context)
                   ]),
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () => _register(context),
                   child: Text('REGISTER'),
                 ),
               ],

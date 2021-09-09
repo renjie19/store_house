@@ -32,4 +32,8 @@ class AuthService extends GetxService {
       showErrorMessage(e);
     }
   }
+
+  void signOut() {
+    _auth.signOut();
+  }
 }

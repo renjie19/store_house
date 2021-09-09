@@ -12,14 +12,6 @@ class MainAppBinding implements Bindings {
 
 class MainAppController extends GetxController {
   final AuthService _authService = Get.find();
-  User? _user;
-
-
-  User? get user => _user;
-
-  set user(User? value) {
-    _user = value;
-  }
 
   Future<void> login(email, password) async {
     try {
@@ -27,5 +19,17 @@ class MainAppController extends GetxController {
     } catch (e) {
       showErrorMessage(e);
     }
+  }
+
+  Future<void> register(email, password) async {
+    try {
+      await _authService.register(email, password);
+    } catch (e) {
+      showErrorMessage(e);
+    }
+  }
+
+  void logOut() {
+    _authService.signOut();
   }
 }

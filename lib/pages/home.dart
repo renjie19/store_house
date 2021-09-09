@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/typicons_icons.dart';
+import 'package:get/get.dart';
+import 'package:store_house/controller/main_app_controller.dart';
 
 class Home extends StatelessWidget {
   static final String name = 'HOME';
   final fontStyle =
       TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
+  final MainAppController _mainAppController = Get.find();
+
+  void _logout() {
+    _mainAppController.logOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,7 @@ class Home extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => _logout(),
               icon: Icon(Typicons.forward_outline, color: Colors.white),
             )
           ],
