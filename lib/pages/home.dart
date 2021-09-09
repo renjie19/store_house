@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:store_house/controller/main_app_controller.dart';
+import 'package:store_house/pages/item_management.dart';
 
 class Home extends StatelessWidget {
   static final String name = 'HOME';
@@ -46,7 +47,7 @@ class Home extends StatelessWidget {
                 SizedBox(height: 16),
                 MaterialButton(
                   padding: EdgeInsets.all(16),
-                  onPressed: () {},
+                  onPressed: () => Get.toNamed(ItemManagement.name),
                   child: Text('MANAGE ITEMS', style: fontStyle),
                   color: Theme.of(context).accentColor,
                   elevation: 0,
