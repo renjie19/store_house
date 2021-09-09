@@ -29,7 +29,7 @@ class StoreHouseApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: GoogleFonts.nunitoTextTheme(),
-        primaryColor: Color(0xFF365EA8),
+        primaryColor: Color(0xFF247BA0),
         accentColor: Color(0xFFE3BE78),
       ),
       initialBinding: MainAppBinding(),

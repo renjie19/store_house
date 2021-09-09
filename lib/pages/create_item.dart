@@ -46,10 +46,8 @@ class _CreateItemState extends State<CreateItem> {
 
   Future<void> _createItem(BuildContext context) async {
     try {
-      // Loader.show(context);
-      if (_formKey.currentState!.fields['barcodeId']!.hasError) {
-        showErrorMessage('Barcode is required.');
-      } else if (_formKey.currentState!.saveAndValidate()) {
+      Loader.show(context);
+      if (_formKey.currentState!.saveAndValidate()) {
         final data = _formKey.currentState!.value;
         await _createItemController.createItem(data);
         setState(() => hasBarcode = false);
@@ -59,7 +57,7 @@ class _CreateItemState extends State<CreateItem> {
     } catch (e) {
       showErrorMessage(e);
     } finally {
-      // Loader.hide();
+      Loader.hide();
     }
   }
 
@@ -125,6 +123,7 @@ class _CreateItemState extends State<CreateItem> {
                   name: 'itemName',
                   decoration: inputDecoration.copyWith(labelText: 'Item Name'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.next,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context),
                   ]),
@@ -133,6 +132,7 @@ class _CreateItemState extends State<CreateItem> {
                   name: 'capital',
                   decoration: inputDecoration.copyWith(labelText: 'Capital'),
                   keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
                   ],
@@ -146,6 +146,7 @@ class _CreateItemState extends State<CreateItem> {
                   name: 'wholesale',
                   decoration: inputDecoration.copyWith(labelText: 'Wholesale'),
                   keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
                   ],
@@ -159,6 +160,7 @@ class _CreateItemState extends State<CreateItem> {
                   name: 'retail',
                   decoration: inputDecoration.copyWith(labelText: 'Retail'),
                   keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
                   ],

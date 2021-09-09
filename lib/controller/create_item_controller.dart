@@ -17,7 +17,7 @@ class CreateItemController extends GetxController {
     try {
       await _storageService.addItem(item);
     } catch (error) {
-      showErrorMessage(error);
+      throw error;
     }
   }
 }

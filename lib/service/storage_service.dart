@@ -7,61 +7,64 @@ import 'package:store_house/util/notification_util.dart';
 class StorageService extends GetxService {
   static const String ITEM_COLLECTION = 'store_house_items';
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _itemCollection = FirebaseFirestore.instance.collection(ITEM_COLLECTION);
+  final _itemCollection =
+      FirebaseFirestore.instance.collection(ITEM_COLLECTION);
 
   Future<void> addItem(item) async {
     try {
+      await _barcodeExists(item['barcodeId']);
       final itemWithTrail = addTrail(item);
       var itemDocument = _itemCollection.doc();
       itemWithTrail['documentId'] = itemDocument.id;
       await itemDocument.set(itemWithTrail);
     } catch (error) {
-      showErrorMessage(error);
+      throw error;
+    }
+  }
+
+  Future<void> _barcodeExists(final String barcode) async {
+    var existingItemWithBarcode = await _itemCollection
+        .where('barcodeId', isEqualTo: barcode)
+        .get();
+    if(existingItemWithBarcode.docs.isNotEmpty) {
+      throw 'Barcode already exists';
     }
   }
 
   Future<void> updateItem(item) async {
-    try {
-
-    } catch (error) {
+    try {} catch (error) {
       showErrorMessage(error);
     }
   }
 
   Future<void> deleteItem(id) async {
-    try {
-
-    } catch (error) {
+    try {} catch (error) {
       showErrorMessage(error);
     }
   }
 
   Future<void> findItemByBarcodeId(barCodeId) async {
-    try {
-
-    } catch (error) {
+    try {} catch (error) {
       showErrorMessage(error);
     }
   }
 
   Future<void> findItemByName(barCodeId) async {
-    try {
-
-    } catch (error) {
+    try {} catch (error) {
       showErrorMessage(error);
     }
   }
 
   Map<String, dynamic> addTrail(data, {isNew = true}) {
     final dataWithTrail = new Map<String, dynamic>.from(data);
-    if(isNew) {
+    if (isNew) {
       dataWithTrail['dateCreated'] = DateTime.now().millisecondsSinceEpoch;
-      dataWithTrail['createdBy '] = _auth.currentUser!.displayName ?? _auth.currentUser!.email;
+      dataWithTrail['createdBy '] =
+          _auth.currentUser!.displayName ?? _auth.currentUser!.email;
     }
     dataWithTrail['dateModified'] = DateTime.now().millisecondsSinceEpoch;
-    dataWithTrail['modifiedBy'] = _auth.currentUser!.displayName ?? _auth.currentUser!.email;
+    dataWithTrail['modifiedBy'] =
+        _auth.currentUser!.displayName ?? _auth.currentUser!.email;
     return dataWithTrail;
   }
-
-
 }
