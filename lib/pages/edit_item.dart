@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:store_house/controller/create_item_controller.dart';
 import 'package:store_house/util/notification_util.dart';
 
@@ -19,14 +20,16 @@ class _EditItemState extends State<EditItem> {
   final _formKey = GlobalKey<FormBuilderState>();
   final Map<String, dynamic> itemInfo = Get.arguments ?? {};
   final CreateItemController _createItemController = Get.find();
-  final inputDecoration = InputDecoration();
-  final numberTransformer = (value) =>
-  value == null ? '0.00' : double.parse(value).toStringAsFixed(2);
   bool hasBarcode = false;
 
+  final numberFormatter = NumberFormat('#,##0.00', 'en_US');
+  String numberTransformer(value) =>
+      value == null ? '0.00' : numberFormatter.format(double.parse(value));
+
+  final inputDecoration = InputDecoration();
+
   void _clearBarcodeField() {
-    _formKey.currentState!
-        .patchValue({'barcodeId': ''});
+    _formKey.currentState!.patchValue({'barcodeId': ''});
     setState(() => hasBarcode = false);
   }
 
@@ -48,8 +51,10 @@ class _EditItemState extends State<EditItem> {
       Loader.show(context);
       if (_formKey.currentState!.saveAndValidate()) {
         final data = _formKey.currentState!.value;
-        final updatedItem = Map.fromEntries([...itemInfo.entries, ...data.entries]);
-        final updatedResult = await _createItemController.updateItem(updatedItem);
+        final updatedItem =
+            Map.fromEntries([...itemInfo.entries, ...data.entries]);
+        final updatedResult =
+            await _createItemController.updateItem(updatedItem);
         Get.back(result: updatedResult);
       }
     } catch (e) {
@@ -85,8 +90,8 @@ class _EditItemState extends State<EditItem> {
                             labelText: 'Item Barcode',
                             suffixIcon: hasBarcode
                                 ? IconButton(
-                                onPressed: _clearBarcodeField,
-                                icon: Icon(FontAwesome5.times_circle))
+                                    onPressed: _clearBarcodeField,
+                                    icon: Icon(FontAwesome5.times_circle))
                                 : SizedBox()),
                         readOnly: true,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -121,6 +126,7 @@ class _EditItemState extends State<EditItem> {
                   ]),
                 ),
                 FormBuilderTextField(
+                  maxLength: 8,
                   name: 'capital',
                   decoration: inputDecoration.copyWith(labelText: 'Capital'),
                   keyboardType: TextInputType.number,
@@ -135,6 +141,7 @@ class _EditItemState extends State<EditItem> {
                   ]),
                 ),
                 FormBuilderTextField(
+                  maxLength: 8,
                   name: 'wholesale',
                   decoration: inputDecoration.copyWith(labelText: 'Wholesale'),
                   keyboardType: TextInputType.number,
@@ -149,6 +156,7 @@ class _EditItemState extends State<EditItem> {
                   ]),
                 ),
                 FormBuilderTextField(
+                  maxLength: 8,
                   name: 'retail',
                   decoration: inputDecoration.copyWith(labelText: 'Retail'),
                   keyboardType: TextInputType.number,

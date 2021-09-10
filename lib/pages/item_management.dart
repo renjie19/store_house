@@ -34,6 +34,15 @@ class ItemManagement extends StatelessWidget {
     }
   }
 
+  Future<void> _toCreateItem(BuildContext context) async {
+    try {
+      Get.toNamed(CreateItem.name)
+          ?.then((value) async => await _loadItems(context));
+    } catch (e) {
+      showErrorMessage(e);
+    }
+  }
+
   Future<void> _startScan(BuildContext context) async {
     try {
       final barcode = await FlutterBarcodeScanner.scanBarcode(
@@ -95,7 +104,7 @@ class ItemManagement extends StatelessWidget {
           ),
           IconButton(
             tooltip: 'Create',
-            onPressed: () => Get.toNamed(CreateItem.name),
+            onPressed: () => _toCreateItem(context),
             icon: Icon(Typicons.plus_outline, color: Colors.white),
           ),
         ]),

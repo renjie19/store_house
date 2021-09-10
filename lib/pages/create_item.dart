@@ -7,6 +7,7 @@ import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:store_house/controller/create_item_controller.dart';
 import 'package:store_house/util/notification_util.dart';
 
@@ -20,10 +21,13 @@ class CreateItem extends StatefulWidget {
 class _CreateItemState extends State<CreateItem> {
   final _formKey = GlobalKey<FormBuilderState>();
   final CreateItemController _createItemController = Get.find();
-  final inputDecoration = InputDecoration();
-  final numberTransformer = (value) =>
-      value == null ? '0.00' : double.parse(value).toStringAsFixed(2);
   bool hasBarcode = false;
+
+  final inputDecoration = InputDecoration();
+
+  final numberFormatter = NumberFormat('#,##0.00', 'en_US');
+  String numberTransformer(value) =>
+      value == null ? '0.00' : numberFormatter.format(double.parse(value));
 
   void _clearBarcodeField() {
     _formKey.currentState!
@@ -129,6 +133,7 @@ class _CreateItemState extends State<CreateItem> {
                   ]),
                 ),
                 FormBuilderTextField(
+                  maxLength: 8,
                   name: 'capital',
                   decoration: inputDecoration.copyWith(labelText: 'Capital'),
                   keyboardType: TextInputType.number,
@@ -143,6 +148,7 @@ class _CreateItemState extends State<CreateItem> {
                   ]),
                 ),
                 FormBuilderTextField(
+                  maxLength: 8,
                   name: 'wholesale',
                   decoration: inputDecoration.copyWith(labelText: 'Wholesale'),
                   keyboardType: TextInputType.number,
@@ -157,6 +163,7 @@ class _CreateItemState extends State<CreateItem> {
                   ]),
                 ),
                 FormBuilderTextField(
+                  maxLength: 8,
                   name: 'retail',
                   decoration: inputDecoration.copyWith(labelText: 'Retail'),
                   keyboardType: TextInputType.number,
