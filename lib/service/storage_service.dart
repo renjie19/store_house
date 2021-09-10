@@ -66,7 +66,7 @@ class StorageService extends GetxService {
     final dataWithTrail = new Map<String, dynamic>.from(data);
     if (isNew) {
       dataWithTrail['dateCreated'] = DateTime.now().millisecondsSinceEpoch;
-      dataWithTrail['createdBy '] =
+      dataWithTrail['createdBy'] =
           _auth.currentUser!.displayName ?? _auth.currentUser!.email;
     }
     dataWithTrail['dateModified'] = DateTime.now().millisecondsSinceEpoch;
