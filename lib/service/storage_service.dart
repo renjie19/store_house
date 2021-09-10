@@ -46,8 +46,9 @@ class StorageService extends GetxService {
     try {
       final result = await _itemCollection
           .where('barcodeId', isEqualTo: barcodeId)
-          .limit(1).get();
-      if(result.docs.isEmpty) {
+          .limit(1)
+          .get();
+      if (result.docs.isEmpty) {
         throw 'Item does not exist.';
       }
       return result.docs.first.data();
@@ -56,10 +57,12 @@ class StorageService extends GetxService {
     }
   }
 
-  Future<void> findItemByName(barCodeId) async {
-    try {} catch (error) {
-      showErrorMessage(error);
-    }
+  Future<List<Map<String, dynamic>>> findItemsByName(itemName) async {
+    print(itemName);
+    final results = await _itemCollection.orderBy('itemName')
+        .startAt([itemName]).endAt([itemName + '\uf8ff']).get();
+    print(results.docs);
+    return results.docs.map((e) => e.data()).toList();
   }
 
   Map<String, dynamic> addTrail(data, {isNew = true}) {
@@ -73,5 +76,14 @@ class StorageService extends GetxService {
     dataWithTrail['modifiedBy'] =
         _auth.currentUser!.displayName ?? _auth.currentUser!.email;
     return dataWithTrail;
+  }
+
+  Future<List<Map<String, dynamic>>> findAllItems(
+      {itemName = '', barcodeId = ''}) async {
+    final results = await _itemCollection.orderBy('itemName').get();
+    if (results.docs.isEmpty) {
+      return [];
+    }
+    return results.docs.map((e) => e.data()).toList();
   }
 }
