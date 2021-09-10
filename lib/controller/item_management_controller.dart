@@ -39,4 +39,8 @@ class ItemManagementController extends GetxService {
     _items.clear();
     _items.addAll(results);
   }
+
+  Future<Map<String, dynamic>> findItemByBarcode(barcodeId) async {
+    return await _storageService.findItemByBarcodeId(barcodeId);
+  }
 }

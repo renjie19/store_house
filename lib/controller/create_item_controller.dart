@@ -14,10 +14,6 @@ class CreateItemController extends GetxController {
   final StorageService _storageService = Get.find();
 
   Future<void> createItem(item) async {
-    try {
-      await _storageService.addItem(item);
-    } catch (error) {
-      throw error;
-    }
+    await _storageService.addItem(item);
   }
 }

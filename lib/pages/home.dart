@@ -22,7 +22,7 @@ class Home extends StatelessWidget {
       if (barcode != '-1') {
         Loader.show(context);
         final result = await _mainAppController.findItemByBarcode(barcode);
-        Get.toNamed(ItemDetails.name, arguments: result);
+        Get.toNamed(ItemDetails.name, arguments: {'item': result});
       }
     } catch (e) {
       showErrorMessage(e);

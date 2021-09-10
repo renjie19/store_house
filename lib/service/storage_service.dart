@@ -36,10 +36,8 @@ class StorageService extends GetxService {
     }
   }
 
-  Future<void> deleteItem(id) async {
-    try {} catch (error) {
-      showErrorMessage(error);
-    }
+  Future<void> deleteItem(documentId) async {
+    await _itemCollection.doc(documentId).delete();
   }
 
   Future<Map<String, dynamic>> findItemByBarcodeId(barcodeId) async {

@@ -16,19 +16,11 @@ class MainAppController extends GetxController {
   final StorageService _storageService = Get.find();
 
   Future<void> login(email, password) async {
-    try {
-      await _authService.login(email, password);
-    } catch (e) {
-      throw e;
-    }
+    await _authService.login(email, password);
   }
 
   Future<void> register(email, password, displayName) async {
-    try {
-      await _authService.register(email, password, displayName);
-    } catch (e) {
-      throw e;
-    }
+    await _authService.register(email, password, displayName);
   }
 
   void logOut() {
@@ -36,10 +28,6 @@ class MainAppController extends GetxController {
   }
 
   Future<Map<String, dynamic>> findItemByBarcode(barcodeId) async {
-    try {
-      return await _storageService.findItemByBarcodeId(barcodeId);
-    } catch (e) {
-      throw e;
-    }
+    return await _storageService.findItemByBarcodeId(barcodeId);
   }
 }

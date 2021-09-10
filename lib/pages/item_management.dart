@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:fluttericon/elusive_icons.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:fluttericon/iconic_icons.dart';
+import 'package:fluttericon/linearicons_free_icons.dart';
+import 'package:fluttericon/octicons_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:store_house/controller/item_management_controller.dart';
 import 'package:store_house/pages/create_item.dart';
 import 'package:store_house/util/notification_util.dart';
+
+import 'item_details.dart';
 
 class ItemManagement extends StatelessWidget {
   static final String name = '/ITEM_MANAGEMENT';
@@ -25,12 +34,41 @@ class ItemManagement extends StatelessWidget {
     }
   }
 
+  Future<void> _startScan(BuildContext context) async {
+    try {
+      final barcode = await FlutterBarcodeScanner.scanBarcode(
+          '#FF247BA0'.toString(), 'Cancel', true, ScanMode.BARCODE);
+      if (barcode != '-1') {
+        Loader.show(context);
+        final result =
+            await _itemManagementController.findItemByBarcode(barcode);
+        Get.toNamed(ItemDetails.name,
+                arguments: {'item': result, 'isEdit': true})
+            ?.then((value) async => await _loadItems(context));
+      }
+    } catch (e) {
+      showErrorMessage(e);
+    } finally {
+      Loader.hide();
+    }
+  }
+
+  void _toEditItemPage(context, item) {
+    try {
+      Get.toNamed(ItemDetails.name, arguments: {'item': item, 'isEdit': true})
+          ?.then((value) async => await _loadItems(context));
+    } catch (e) {
+      showErrorMessage(e);
+    }
+  }
+
   Future<void> _searchItemByName(BuildContext context) async {
     try {
       Loader.show(context);
       if (_formKey.currentState!.saveAndValidate()) {
         await _itemManagementController
             .findItemsByName(_formKey.currentState!.value['itemName']);
+        FocusScope.of(context).unfocus();
       }
     } catch (e) {
       showErrorMessage(e);
@@ -70,84 +108,128 @@ class ItemManagement extends StatelessWidget {
                 Obx(() {
                   return Visibility(
                     visible: _itemManagementController.isSearching,
-                    child: FormBuilder(
-                      key: _formKey,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'itemName',
-                                decoration:
-                                    InputDecoration(labelText: 'Item Name'),
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textInputAction: TextInputAction.next,
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(context),
-                                ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: FormBuilder(
+                        key: _formKey,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 7,
+                                child: FormBuilderTextField(
+                                  name: 'itemName',
+                                  decoration:
+                                      InputDecoration(labelText: 'Item Name'),
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  textInputAction: TextInputAction.next,
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(context),
+                                  ]),
+                                ),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () => _searchItemByName(context),
-                              icon: Icon(
-                                Typicons.search_outline,
-                                color: Theme.of(context).primaryColor,
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  onPressed: () => _searchItemByName(context),
+                                  icon: Icon(
+                                    Typicons.search_outline,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 32,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ]),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  tooltip: 'Scan Barcode',
+                                  onPressed: () => _startScan(context),
+                                  icon: Icon(
+                                    Elusive.barcode,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 32,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ),
                     ),
                   );
                 }),
                 Expanded(
                   child: Obx(() {
-                    return ListView.separated(
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemCount: _itemManagementController.items.length,
-                        itemBuilder: (context, index) {
-                          final item = _itemManagementController.items[index];
-                          return ListTile(
-                            title: Text(
-                              item['itemName'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                            ),
-                            subtitle: Container(
-                              margin: EdgeInsets.only(left: 8),
-                              child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Row(children: [
-                                      Text('Capital: '),
-                                      SizedBox(width: 32),
-                                      Text(
-                                        item['capital'],
-                                        style: subTitleStyle,
-                                      ),
-                                    ]),
-                                    Row(children: [
-                                      Text('Wholesale: '),
-                                      SizedBox(width: 9),
-                                      Text(
-                                        item['wholesale'],
-                                        style: subTitleStyle,
-                                      ),
-                                    ]),
-                                    Row(children: [
-                                      Text('Retail: '),
-                                      SizedBox(width: 40),
-                                      Text(
-                                        item['retail'],
-                                        style: subTitleStyle,
-                                      ),
-                                    ]),
-                                  ]),
-                            ),
-                          );
-                        });
+                    return _itemManagementController.items.length == 0
+                        ? Center(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Typicons.thumbs_down,
+                                    size: 80,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  Text(
+                                    'No Records Found. You can create items by clicking the plus icon.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ]),
+                          )
+                        : ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            itemCount: _itemManagementController.items.length,
+                            itemBuilder: (context, index) {
+                              final item =
+                                  _itemManagementController.items[index];
+                              return ListTile(
+                                onTap: () => _toEditItemPage(context, item),
+                                title: Text(
+                                  item['itemName'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                subtitle: Container(
+                                  margin: EdgeInsets.only(left: 8),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Row(children: [
+                                          Text('Capital: '),
+                                          SizedBox(width: 32),
+                                          Text(
+                                            item['capital'],
+                                            style: subTitleStyle,
+                                          ),
+                                        ]),
+                                        Row(children: [
+                                          Text('Wholesale: '),
+                                          SizedBox(width: 9),
+                                          Text(
+                                            item['wholesale'],
+                                            style: subTitleStyle,
+                                          ),
+                                        ]),
+                                        Row(children: [
+                                          Text('Retail: '),
+                                          SizedBox(width: 40),
+                                          Text(
+                                            item['retail'],
+                                            style: subTitleStyle,
+                                          ),
+                                        ]),
+                                      ]),
+                                ),
+                              );
+                            });
                   }),
                 )
               ]),
