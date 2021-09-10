@@ -30,10 +30,10 @@ class StorageService extends GetxService {
     }
   }
 
-  Future<void> updateItem(item) async {
-    try {} catch (error) {
-      showErrorMessage(error);
-    }
+  Future<Map<String, dynamic>> updateItem(item) async {
+    final updatedItemWithTrail = addTrail(item, isNew: false);
+    await _itemCollection.doc(item['documentId']).update(updatedItemWithTrail);
+    return updatedItemWithTrail;
   }
 
   Future<void> deleteItem(documentId) async {

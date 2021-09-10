@@ -16,4 +16,7 @@ class CreateItemController extends GetxController {
   Future<void> createItem(item) async {
     await _storageService.addItem(item);
   }
+  Future<Map<String, dynamic>> updateItem(item) async {
+    return await _storageService.updateItem(item);
+  }
 }

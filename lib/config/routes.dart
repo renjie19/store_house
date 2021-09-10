@@ -15,6 +15,6 @@ final routes = <GetPage>[
   GetPage(name: ItemManagement.name, page: () => ItemManagement(), binding: ItemManagementBinding()),
   GetPage(name: ItemDetails.name, page: () => ItemDetails(), binding: ItemDetailsBinding()),
   GetPage(name: Profile.name, page: () => Profile()),
-  GetPage(name: EditItem.name, page: () => EditItem()),
+  GetPage(name: EditItem.name, page: () => EditItem(), binding: CreateItemBinding()),
   GetPage(name: CreateItem.name, page: () => CreateItem(), binding: CreateItemBinding()),
 ];

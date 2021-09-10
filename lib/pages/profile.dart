@@ -12,6 +12,11 @@ class Profile extends StatelessWidget {
 
   final buttonTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black);
 
+  void _logOut() {
+    _mainAppController.logOut();
+    Get.back();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -67,7 +72,7 @@ class Profile extends StatelessWidget {
                     child: Text('Privacy Policy', style: buttonTextStyle),
                   ),
                   TextButton(
-                    onPressed: () => _mainAppController.logOut(),
+                    onPressed: () => _logOut(),
                     child: Text('LOG OUT', style: buttonTextStyle.copyWith(color: Theme.of(context).errorColor)),
                   ),
                 ],

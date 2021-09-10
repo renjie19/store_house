@@ -2,20 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:store_house/controller/item_details_controller.dart';
+import 'package:store_house/pages/edit_item.dart';
 import 'package:store_house/util/date_util.dart';
 import 'package:store_house/util/notification_util.dart';
 
-class ItemDetails extends StatelessWidget {
+class ItemDetails extends StatefulWidget {
   static final String name = '/ITEM_CHECK';
-  final itemInfo = Get.arguments['item'] ?? {};
-  final bool isEdit = Get.arguments['isEdit'] ?? false;
-  final ItemDetailsController _itemDetailsController = Get.find();
 
-  final trailTextStyle = TextStyle(fontSize: 16);
-  final buttonStyle = TextStyle(
+  @override
+  _ItemDetailsState createState() => _ItemDetailsState();
+}
+
+class _ItemDetailsState extends State<ItemDetails> {
+  final bool _isEdit = Get.arguments['isEdit'] ?? false;
+  final ItemDetailsController _itemDetailsController = Get.find();
+  Map<String, dynamic> _itemInfo = Get.arguments['item'] ?? {};
+
+  final _trailTextStyle = TextStyle(fontSize: 16);
+
+  final _buttonStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20,
   );
+
+  void _updateItem() {
+    try {
+      Get.toNamed(EditItem.name, arguments: _itemInfo)?.then((value) {
+        if (value != null) setState(() => _itemInfo = value);
+      });
+    } catch (e) {
+      showErrorMessage(e);
+    }
+  }
 
   Future<void> _deleteItem(documentId) async {
     try {
@@ -43,35 +61,35 @@ class ItemDetails extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Created By: ', style: trailTextStyle),
-                          Text('${itemInfo['createdBy'] ?? ''}',
-                              style: trailTextStyle),
+                          Text('Created By: ', style: _trailTextStyle),
+                          Text('${_itemInfo['createdBy'] ?? ''}',
+                              style: _trailTextStyle),
                         ]),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Modified By: ', style: trailTextStyle),
-                          Text('${itemInfo['modifiedBy'] ?? ''}',
-                              style: trailTextStyle),
+                          Text('Modified By: ', style: _trailTextStyle),
+                          Text('${_itemInfo['modifiedBy'] ?? ''}',
+                              style: _trailTextStyle),
                         ]),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Date Created: ', style: trailTextStyle),
+                          Text('Date Created: ', style: _trailTextStyle),
                           Text(
                             formatDate(DateTime.fromMillisecondsSinceEpoch(
-                                itemInfo['dateCreated'])),
-                            style: trailTextStyle,
+                                _itemInfo['dateCreated'])),
+                            style: _trailTextStyle,
                           ),
                         ]),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Date Modified: ', style: trailTextStyle),
+                          Text('Date Modified: ', style: _trailTextStyle),
                           Text(
                             formatDate(DateTime.fromMillisecondsSinceEpoch(
-                                itemInfo['dateModified'])),
-                            style: trailTextStyle,
+                                _itemInfo['dateModified'])),
+                            style: _trailTextStyle,
                           ),
                         ]),
                     Divider(height: 24),
@@ -80,7 +98,7 @@ class ItemDetails extends StatelessWidget {
                         children: [
                           Text('Item Name: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${itemInfo['itemName'] ?? ''}',
+                            '${_itemInfo['itemName'] ?? ''}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
@@ -92,7 +110,7 @@ class ItemDetails extends StatelessWidget {
                         children: [
                           Text('Barcode: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${itemInfo['barcodeId'] ?? ''}',
+                            '${_itemInfo['barcodeId'] ?? ''}',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 26),
                           ),
@@ -102,7 +120,7 @@ class ItemDetails extends StatelessWidget {
                         children: [
                           Text('Capital: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${itemInfo['capital'] ?? '0.00'}',
+                            '${_itemInfo['capital'] ?? '0.00'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
@@ -114,7 +132,7 @@ class ItemDetails extends StatelessWidget {
                         children: [
                           Text('Wholesale: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${itemInfo['wholesale'] ?? '0.00'}',
+                            '${_itemInfo['wholesale'] ?? '0.00'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
@@ -126,7 +144,7 @@ class ItemDetails extends StatelessWidget {
                         children: [
                           Text('Retail: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${itemInfo['retail'] ?? '0.00'}',
+                            '${_itemInfo['retail'] ?? '0.00'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
@@ -136,7 +154,7 @@ class ItemDetails extends StatelessWidget {
                   ],
                 ),
                 Visibility(
-                  visible: isEdit,
+                  visible: _isEdit,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -146,10 +164,10 @@ class ItemDetails extends StatelessWidget {
                             elevation: 0,
                             color: Theme.of(context).errorColor,
                             onPressed: () =>
-                                _deleteItem(itemInfo['documentId']),
+                                _deleteItem(_itemInfo['documentId']),
                             child: Text(
                               'DELETE',
-                              style: buttonStyle.copyWith(
+                              style: _buttonStyle.copyWith(
                                   color: Theme.of(context).accentColor),
                             ),
                           ),
@@ -160,10 +178,10 @@ class ItemDetails extends StatelessWidget {
                             padding: EdgeInsets.symmetric(vertical: 12),
                             elevation: 0,
                             color: Theme.of(context).primaryColor,
-                            onPressed: () {},
+                            onPressed: () => _updateItem(),
                             child: Text(
                               'UPDATE',
-                              style: buttonStyle.copyWith(
+                              style: _buttonStyle.copyWith(
                                   color: Theme.of(context).accentColor),
                             ),
                           ),
