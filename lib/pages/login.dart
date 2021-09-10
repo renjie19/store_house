@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/register.dart';
 import 'package:store_house/util/notification_util.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormBuilderState>();
   final MainAppController _mainAppController = Get.find();
+  bool _visible = false;
 
   final inputDecoration = InputDecoration(
     labelStyle: TextStyle(color: Colors.white),
@@ -74,9 +82,28 @@ class Login extends StatelessWidget {
                       FormBuilderTextField(
                           style: TextStyle(color: Colors.white),
                           name: 'password',
-                          obscureText: true,
-                          decoration:
-                              inputDecoration.copyWith(labelText: 'Password'),
+                          obscureText: !_visible,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: inputDecoration.copyWith(
+                            labelText: 'Password',
+                            suffixIcon: !_visible
+                                ? IconButton(
+                                    onPressed: () =>
+                                        setState(() => _visible = !_visible),
+                                    icon: Icon(
+                                      FontAwesome.eye_off,
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                  )
+                                : IconButton(
+                                    onPressed: () =>
+                                        setState(() => _visible = !_visible),
+                                    icon: Icon(
+                                      FontAwesome.eye,
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                  ),
+                          ),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
