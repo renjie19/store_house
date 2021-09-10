@@ -24,14 +24,13 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<User?> register(email, password) async {
+  Future<void> register(email, password, displayName) async {
     try {
       final UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-      print(userCredential);
-      return userCredential.user;
+      await userCredential.user!.updateDisplayName(displayName);
     } catch (e) {
-      showErrorMessage(e);
+      throw e;
     }
   }
 

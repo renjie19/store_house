@@ -89,7 +89,7 @@ class Login extends StatelessWidget {
               MaterialButton(
                 minWidth: 200,
                 padding: EdgeInsets.all(8),
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).primaryColor,
                 elevation: 0,
                 onPressed: () => _login(context),
                 child: Text(
@@ -106,7 +106,7 @@ class Login extends StatelessWidget {
                 child: Text(
                   'Register',
                   style: TextStyle(
-                      fontSize: 18, color: Theme.of(context).accentColor),
+                      fontSize: 18, color: Theme.of(context).primaryColor),
                 ),
               )
             ],

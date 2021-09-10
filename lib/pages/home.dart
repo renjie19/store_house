@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:store_house/controller/main_app_controller.dart';
+import 'package:store_house/pages/item_details.dart';
 import 'package:store_house/pages/item_management.dart';
+import 'package:store_house/pages/profile.dart';
+import 'package:store_house/util/notification_util.dart';
 
 class Home extends StatelessWidget {
   static final String name = 'HOME';
@@ -10,8 +15,20 @@ class Home extends StatelessWidget {
       TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
   final MainAppController _mainAppController = Get.find();
 
-  void _logout() {
-    _mainAppController.logOut();
+  Future<void> _startScan(BuildContext context) async {
+    try {
+      final barcode = await FlutterBarcodeScanner.scanBarcode(
+          '#FF247BA0'.toString(), 'Cancel', true, ScanMode.BARCODE);
+      if (barcode != '-1') {
+        Loader.show(context);
+        final result = await _mainAppController.findItemByBarcode(barcode);
+        Get.toNamed(ItemDetails.name, arguments: result);
+      }
+    } catch (e) {
+      showErrorMessage(e);
+    } finally {
+      Loader.hide();
+    }
   }
 
   @override
@@ -25,8 +42,8 @@ class Home extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              onPressed: () => _logout(),
-              icon: Icon(Typicons.forward_outline, color: Colors.white),
+              onPressed: () => Get.toNamed(Profile.name),
+              icon: Icon(Typicons.user_outline, color: Colors.white),
             )
           ],
         ),
@@ -39,7 +56,7 @@ class Home extends StatelessWidget {
               children: [
                 MaterialButton(
                   padding: EdgeInsets.all(16),
-                  onPressed: () {},
+                  onPressed: () => _startScan(context),
                   child: Text('SCAN ITEM', style: fontStyle),
                   color: Theme.of(context).primaryColor,
                   elevation: 0,

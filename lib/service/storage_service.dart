@@ -23,10 +23,9 @@ class StorageService extends GetxService {
   }
 
   Future<void> _barcodeExists(final String barcode) async {
-    var existingItemWithBarcode = await _itemCollection
-        .where('barcodeId', isEqualTo: barcode)
-        .get();
-    if(existingItemWithBarcode.docs.isNotEmpty) {
+    var existingItemWithBarcode =
+        await _itemCollection.where('barcodeId', isEqualTo: barcode).get();
+    if (existingItemWithBarcode.docs.isNotEmpty) {
       throw 'Barcode already exists';
     }
   }
@@ -43,9 +42,17 @@ class StorageService extends GetxService {
     }
   }
 
-  Future<void> findItemByBarcodeId(barCodeId) async {
-    try {} catch (error) {
-      showErrorMessage(error);
+  Future<Map<String, dynamic>> findItemByBarcodeId(barcodeId) async {
+    try {
+      final result = await _itemCollection
+          .where('barcodeId', isEqualTo: barcodeId)
+          .limit(1).get();
+      if(result.docs.isEmpty) {
+        throw 'Item does not exist.';
+      }
+      return result.docs.first.data();
+    } catch (error) {
+      throw error;
     }
   }
 

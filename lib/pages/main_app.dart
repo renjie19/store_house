@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:store_house/pages/home.dart';
 import 'package:store_house/pages/login.dart';
-import 'package:store_house/service/auth_service.dart';
 
 class MainApp extends StatelessWidget {
   @override
@@ -12,12 +10,12 @@ class MainApp extends StatelessWidget {
         initialData: null,
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> user) {
+          print(user.data);
           if(user.data == null) {
             return Login();
           } else {
             return Home();
           }
-          // return Home();
         });
   }
 }

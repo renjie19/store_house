@@ -12,10 +12,11 @@ class Register extends StatelessWidget {
 
   Future<void> _register(BuildContext context) async {
     try {
-      if(_formKey.currentState!.saveAndValidate()) {
+      if (_formKey.currentState!.saveAndValidate()) {
         Loader.show(context);
         final data = _formKey.currentState!.value;
-        await _mainAppController.register(data['email'], data['password']);
+        await _mainAppController.register(
+            data['email'], data['password'], data['displayName']);
         Get.back();
       }
     } catch (errorMessage) {
@@ -50,9 +51,16 @@ class Register extends StatelessWidget {
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context)
-                  ]),
+                  validator: FormBuilderValidators.compose(
+                      [FormBuilderValidators.required(context)]),
+                ),
+                FormBuilderTextField(
+                  name: 'displayName',
+                  maxLength: 10,
+                  decoration: InputDecoration(labelText: 'Display Name'),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: FormBuilderValidators.compose(
+                      [FormBuilderValidators.required(context)]),
                 ),
                 MaterialButton(
                   onPressed: () => _register(context),

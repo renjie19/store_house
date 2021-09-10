@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:store_house/config/get_config.dart';
+import 'package:store_house/config/project_build.dart';
 import 'package:store_house/config/routes.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/loading.dart';
@@ -11,6 +12,7 @@ import 'package:store_house/pages/main_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await ProjectBuild.init();
   initGetDependencies();
   runApp(StoreHouseApp());
 }
@@ -30,7 +32,7 @@ class StoreHouseApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: GoogleFonts.nunitoTextTheme(),
         primaryColor: Color(0xFF247BA0),
-        accentColor: Color(0xFFE3BE78),
+        accentColor: Color(0xFFF6FFF8),
       ),
       initialBinding: MainAppBinding(),
       getPages: routes,
