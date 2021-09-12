@@ -4,10 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class StorageService extends GetxService {
-  static const String ITEM_COLLECTION = kReleaseMode ? 'store_house_items' : 'debug_store_house_items';
+  static const String DEBUG_ITEM_COLLECTION = 'debug_store_house_items';
+  static const String ITEM_COLLECTION = 'store_house_items';
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _itemCollection =
-      FirebaseFirestore.instance.collection(ITEM_COLLECTION);
+  final _itemCollection = FirebaseFirestore.instance
+      .collection(kReleaseMode ? ITEM_COLLECTION : DEBUG_ITEM_COLLECTION);
 
   Future<void> addItem(item) async {
     try {
@@ -56,7 +57,8 @@ class StorageService extends GetxService {
 
   Future<List<Map<String, dynamic>>> findItemsByName(itemName) async {
     print(itemName);
-    final results = await _itemCollection.orderBy('itemName')
+    final results = await _itemCollection
+        .orderBy('itemName')
         .startAt([itemName]).endAt([itemName + '\uf8ff']).get();
     print(results.docs);
     return results.docs.map((e) => e.data()).toList();

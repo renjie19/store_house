@@ -39,7 +39,7 @@ class _CreateItemState extends State<CreateItem> {
   Future<void> _scanBarCode(BuildContext context) async {
     try {
       final result = await FlutterBarcodeScanner.scanBarcode(
-          '#FF247BA0'.toString(), 'Cancel', true, ScanMode.BARCODE);
+          '#FF247BA0', 'Cancel', true, ScanMode.BARCODE);
       if (result != '-1') {
         setState(() => hasBarcode = true);
         _formKey.currentState!.patchValue({'barcodeId': result});

@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:store_house/controller/item_management_controller.dart';
 import 'package:store_house/pages/create_item.dart';
 import 'package:store_house/util/notification_util.dart';
+import 'package:store_house/util/string_formatter.dart';
 
 import 'item_details.dart';
 
@@ -132,7 +133,10 @@ class ItemManagement extends StatelessWidget {
                                       InputDecoration(labelText: 'Item Name'),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
+                                  textInputAction: TextInputAction.done,
+                                  valueTransformer: toSnakeCase,
+                                  onSubmitted: (value) =>
+                                      _searchItemByName(context),
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(context),
                                   ]),
@@ -162,6 +166,18 @@ class ItemManagement extends StatelessWidget {
                                 ),
                               ),
                             ]),
+                      ),
+                    ),
+                  );
+                }),
+                Obx(() {
+                  return Visibility(
+                    visible: _itemManagementController.items.length > 0,
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      child: Text(
+                        'Records found: ${_itemManagementController.items.length}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   );
@@ -205,38 +221,38 @@ class ItemManagement extends StatelessWidget {
                                     fontSize: 24,
                                   ),
                                 ),
-                                subtitle: Container(
-                                  margin: EdgeInsets.only(left: 8),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Row(children: [
-                                          Text('Capital: '),
-                                          SizedBox(width: 32),
-                                          Text(
-                                            item['capital'],
-                                            style: subTitleStyle,
-                                          ),
-                                        ]),
-                                        Row(children: [
-                                          Text('Wholesale: '),
-                                          SizedBox(width: 9),
-                                          Text(
-                                            item['wholesale'],
-                                            style: subTitleStyle,
-                                          ),
-                                        ]),
-                                        Row(children: [
-                                          Text('Retail: '),
-                                          SizedBox(width: 40),
-                                          Text(
-                                            item['retail'],
-                                            style: subTitleStyle,
-                                          ),
-                                        ]),
-                                      ]),
-                                ),
+                                // subtitle: Container(
+                                //   margin: EdgeInsets.only(left: 8),
+                                //   child: Column(
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.stretch,
+                                //       children: [
+                                //         Row(children: [
+                                //           Text('Capital: '),
+                                //           SizedBox(width: 32),
+                                //           Text(
+                                //             item['capital'],
+                                //             style: subTitleStyle,
+                                //           ),
+                                //         ]),
+                                //         Row(children: [
+                                //           Text('Wholesale: '),
+                                //           SizedBox(width: 9),
+                                //           Text(
+                                //             item['wholesale'],
+                                //             style: subTitleStyle,
+                                //           ),
+                                //         ]),
+                                //         Row(children: [
+                                //           Text('Retail: '),
+                                //           SizedBox(width: 40),
+                                //           Text(
+                                //             item['retail'],
+                                //             style: subTitleStyle,
+                                //           ),
+                                //         ]),
+                                //       ]),
+                                // ),
                               );
                             });
                   }),

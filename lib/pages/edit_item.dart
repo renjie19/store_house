@@ -24,6 +24,7 @@ class _EditItemState extends State<EditItem> {
   bool hasBarcode = false;
 
   final numberFormatter = NumberFormat('#,##0.00', 'en_US');
+
   String numberTransformer(value) =>
       value == null ? '0.00' : numberFormatter.format(double.parse(value));
 
@@ -78,115 +79,120 @@ class _EditItemState extends State<EditItem> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: FormBuilderTextField(
-                        name: 'barcodeId',
-                        decoration: inputDecoration.copyWith(
-                            labelText: 'Item Barcode',
-                            suffixIcon: hasBarcode
-                                ? IconButton(
-                                    onPressed: _clearBarcodeField,
-                                    icon: Icon(FontAwesome5.times_circle))
-                                : SizedBox()),
-                        readOnly: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        enableInteractiveSelection: false,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                        ]),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      flex: 2,
-                      child: MaterialButton(
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () => _scanBarCode(context),
-                        child: Text(
-                          'Scan Barcode',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: FormBuilderTextField(
+                          name: 'barcodeId',
+                          decoration: inputDecoration.copyWith(
+                              labelText: 'Item Barcode',
+                              suffixIcon: hasBarcode
+                                  ? IconButton(
+                                      onPressed: _clearBarcodeField,
+                                      icon: Icon(FontAwesome5.times_circle))
+                                  : SizedBox()),
+                          readOnly: true,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          enableInteractiveSelection: false,
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                FormBuilderTextField(
-                  name: 'itemName',
-                  decoration: inputDecoration.copyWith(labelText: 'Item Name'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  textInputAction: TextInputAction.next,
-                  valueTransformer: toSnakeCase,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                  ]),
-                ),
-                FormBuilderTextField(
-                  maxLength: 8,
-                  name: 'capital',
-                  decoration: inputDecoration.copyWith(labelText: 'Capital'),
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.next,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-                  ],
-                  valueTransformer: numberTransformer,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                    FormBuilderValidators.numeric(context)
-                  ]),
-                ),
-                FormBuilderTextField(
-                  maxLength: 8,
-                  name: 'wholesale',
-                  decoration: inputDecoration.copyWith(labelText: 'Wholesale'),
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.next,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-                  ],
-                  valueTransformer: numberTransformer,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                    FormBuilderValidators.numeric(context)
-                  ]),
-                ),
-                FormBuilderTextField(
-                  maxLength: 8,
-                  name: 'retail',
-                  decoration: inputDecoration.copyWith(labelText: 'Retail'),
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-                  ],
-                  valueTransformer: numberTransformer,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                    FormBuilderValidators.numeric(context)
-                  ]),
-                ),
-                SizedBox(height: 20),
-                MaterialButton(
-                  padding: EdgeInsets.all(16),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () => _updateItem(context),
-                  child: Text(
-                    'UPDATE',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.white),
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 2,
+                        child: MaterialButton(
+                          color: Theme.of(context).primaryColor,
+                          onPressed: () => _scanBarCode(context),
+                          child: Text(
+                            'Scan Barcode',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                  FormBuilderTextField(
+                    name: 'itemName',
+                    decoration:
+                        inputDecoration.copyWith(labelText: 'Item Name'),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    textInputAction: TextInputAction.next,
+                    valueTransformer: toSnakeCase,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                    ]),
+                  ),
+                  FormBuilderTextField(
+                    maxLength: 8,
+                    name: 'capital',
+                    decoration: inputDecoration.copyWith(labelText: 'Capital'),
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,2}'))
+                    ],
+                    valueTransformer: numberTransformer,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.numeric(context)
+                    ]),
+                  ),
+                  FormBuilderTextField(
+                    maxLength: 8,
+                    name: 'wholesale',
+                    decoration:
+                        inputDecoration.copyWith(labelText: 'Wholesale'),
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,2}'))
+                    ],
+                    valueTransformer: numberTransformer,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.numeric(context)
+                    ]),
+                  ),
+                  FormBuilderTextField(
+                    maxLength: 8,
+                    name: 'retail',
+                    decoration: inputDecoration.copyWith(labelText: 'Retail'),
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,2}'))
+                    ],
+                    valueTransformer: numberTransformer,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.numeric(context)
+                    ]),
+                  ),
+                  SizedBox(height: 20),
+                  MaterialButton(
+                    padding: EdgeInsets.all(16),
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () => _updateItem(context),
+                    child: Text(
+                      'SUBMIT',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                  )
+                ]),
           ),
         ),
       ),
