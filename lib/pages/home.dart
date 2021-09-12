@@ -3,6 +3,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/item_details.dart';
 import 'package:store_house/pages/item_management.dart';
@@ -38,7 +39,11 @@ class Home extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'STORE HOUSE',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: GoogleFonts.nunito().fontFamily,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           actions: [
             IconButton(

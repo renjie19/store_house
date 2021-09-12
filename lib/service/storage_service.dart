@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:store_house/service/auth_service.dart';
-import 'package:store_house/util/notification_util.dart';
 
 class StorageService extends GetxService {
-  static const String ITEM_COLLECTION = 'store_house_items';
+  static const String ITEM_COLLECTION = kReleaseMode ? 'store_house_items' : 'debug_store_house_items';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _itemCollection =
       FirebaseFirestore.instance.collection(ITEM_COLLECTION);

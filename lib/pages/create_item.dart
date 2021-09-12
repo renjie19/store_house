@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:store_house/controller/create_item_controller.dart';
 import 'package:store_house/util/notification_util.dart';
+import 'package:store_house/util/string_formatter.dart';
 
 class CreateItem extends StatefulWidget {
   static final String name = '/CREATE_ITEM';
@@ -128,6 +129,7 @@ class _CreateItemState extends State<CreateItem> {
                   decoration: inputDecoration.copyWith(labelText: 'Item Name'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.next,
+                  valueTransformer: toSnakeCase,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context),
                   ]),

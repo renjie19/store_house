@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:store_house/controller/create_item_controller.dart';
 import 'package:store_house/util/notification_util.dart';
+import 'package:store_house/util/string_formatter.dart';
 
 class EditItem extends StatefulWidget {
   static final String name = '/EDIT_ITEM';
@@ -121,6 +122,7 @@ class _EditItemState extends State<EditItem> {
                   decoration: inputDecoration.copyWith(labelText: 'Item Name'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.next,
+                  valueTransformer: toSnakeCase,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context),
                   ]),
