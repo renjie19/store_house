@@ -4,11 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:store_house/config/project_build.dart';
 import 'package:store_house/controller/main_app_controller.dart';
+import 'package:store_house/pages/edit_profile.dart';
 import 'package:store_house/service/auth_service.dart';
+import 'package:store_house/util/notification_util.dart';
 
 class Profile extends StatelessWidget {
   static final String name = '/PROFILE';
-  final AuthService _authService = Get.find();
   final MainAppController _mainAppController = Get.find();
 
   final buttonTextStyle =
@@ -19,6 +20,14 @@ class Profile extends StatelessWidget {
     Get.back();
   }
 
+  void _toEditProfile() {
+    try {
+      Get.toNamed(EditProfile.name);
+    } catch (e) {
+      showErrorMessage(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,35 +36,40 @@ class Profile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Lottie.asset(
-                      'assets/salad-cat.json',
-                      width: 300,
-                      height: 300,
-                      fit: BoxFit.fill,
+            GestureDetector(
+              onTap: () => _toEditProfile(),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Lottie.asset(
+                        _mainAppController.getCurrentUser()!.photoURL!.isEmpty
+                            ? 'assets/salad-cat.json'
+                            : 'assets/${_mainAppController.getCurrentUser()?.photoURL}.json',
+                        width: 300,
+                        height: 300,
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  ),
-                  Text(
-                    _authService.currentUser?.displayName ?? '',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontFamily: GoogleFonts.anton().fontFamily,
-                      fontSize: 38,
-                      letterSpacing: 2,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      _mainAppController.getCurrentUser()?.displayName ?? '',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontFamily: GoogleFonts.anton().fontFamily,
+                        fontSize: 38,
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    _authService.currentUser?.email ?? '',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 16,
+                    Text(
+                      _mainAppController.getCurrentUser()?.email ?? '',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                ]),
+                  ]),
+            ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 20),
               child: Column(

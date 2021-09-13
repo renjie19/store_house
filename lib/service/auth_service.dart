@@ -27,10 +27,10 @@ class AuthService extends GetxService {
     await userCredential.user!.updatePhotoURL(photoUrl);
   }
 
-  Future<void> updateUser({displayName = '', contactNumber = '', photoUrl = ''}) async {
+  Future<void> updateUser({displayName = '', phoneNumber = '', photoUrl = ''}) async {
     await _auth.currentUser?.updateDisplayName(displayName);
-    await _auth.currentUser?.updatePhoneNumber(contactNumber);
     await _auth.currentUser?.updatePhotoURL(photoUrl);
+    await _auth.currentUser!.reload();
   }
 
   Future<void> forgotPassword(email) async {

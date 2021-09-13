@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:store_house/config/avatar_file_names.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/util/notification_util.dart';
 import 'package:store_house/util/string_formatter.dart';
@@ -12,13 +13,7 @@ class Register extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
   final MainAppController _mainAppController = Get.find();
 
-  final List<String> _avatarLinks = [
-    'avatar-beard-man',
-    'avatar-girl',
-    'male-avatar',
-    'female-avatar',
-    'salad-cat'
-  ];
+
 
   Future<void> _register(BuildContext context) async {
     try {
@@ -85,11 +80,13 @@ class Register extends StatelessWidget {
                 ),
                 FormBuilderDropdown(
                   name: 'photoUrl',
+                  validator: FormBuilderValidators.compose(
+                      [FormBuilderValidators.required(context)]),
                   onChanged: (value) {
                     _mainAppController.selectedAvatar = value.toString();
                   },
-                  items: List.generate(_avatarLinks.length, (index) {
-                    var item = _avatarLinks[index];
+                  items: List.generate(AVATAR_FILE_NAMES.length, (index) {
+                    var item = AVATAR_FILE_NAMES[index];
                     return DropdownMenuItem(
                       value: item,
                       child: Row(

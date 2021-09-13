@@ -13,7 +13,7 @@ showErrorMessage(final dynamic error, {final SnackPosition snackPosition = Snack
 
 showSuccessMessage(final String message) {
   Get.snackbar('Success', message.toString(),
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 5),
       backgroundColor: Colors.green,
       colorText: Colors.white);
 }

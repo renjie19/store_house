@@ -36,6 +36,13 @@ class ItemManagementController extends GetxService {
     Future.delayed(Duration(seconds: 2), () => _isLoading.value = false);
   }
 
+
+  @override
+  void onClose() {
+    _isLoading.value = false;
+    _isSearching.value = false;
+  }
+
   Future<void> getItems() async {
     final itemResults = await _storageService.findAllItems();
     _items.clear();
