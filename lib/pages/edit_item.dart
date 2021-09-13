@@ -99,7 +99,7 @@ class _EditItemState extends State<EditItem> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           enableInteractiveSelection: false,
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.required(context),
                           ]),
                         ),
                       ),

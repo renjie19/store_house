@@ -12,7 +12,11 @@ class StorageService extends GetxService {
 
   Future<void> addItem(item) async {
     try {
-      await _barcodeExists(item['barcodeId']);
+      if(!item['barcodeId'].isEmpty) {
+        await _barcodeExists(item['barcodeId']);
+      } else {
+        await _itemNameExists(item['itemName']);
+      }
       final itemWithTrail = addTrail(item);
       var itemDocument = _itemCollection.doc();
       itemWithTrail['documentId'] = itemDocument.id;
@@ -30,8 +34,21 @@ class StorageService extends GetxService {
     }
   }
 
+  Future<void> _itemNameExists(final String itemName) async {
+    var existingItemWithName =
+        await _itemCollection.where('itemName', isEqualTo: itemName).get();
+    if(existingItemWithName.docs.isNotEmpty) {
+      throw 'Item with name already exists.';
+    }
+  }
+
   Future<Map<String, dynamic>> updateItem(item) async {
     final updatedItemWithTrail = addTrail(item, isNew: false);
+    if(!item['barcodeId'].isEmpty) {
+      await _barcodeExists(item['barcodeId']);
+    } else {
+      await _itemNameExists(item['itemName']);
+    }
     await _itemCollection.doc(item['documentId']).update(updatedItemWithTrail);
     return updatedItemWithTrail;
   }

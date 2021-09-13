@@ -3,11 +3,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/elusive_icons.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:fluttericon/iconic_icons.dart';
-import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:fluttericon/octicons_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:store_house/controller/item_management_controller.dart';
@@ -26,12 +21,13 @@ class ItemManagement extends StatelessWidget {
 
   Future<void> _loadItems(BuildContext context) async {
     try {
-      Loader.show(context);
+      _itemManagementController.isLoading = true;
       await _itemManagementController.getItems();
     } catch (e) {
       showErrorMessage(e);
     } finally {
-      Loader.hide();
+      Future.delayed(Duration(seconds: 2),
+          () => _itemManagementController.isLoading = false);
     }
   }
 
@@ -115,6 +111,23 @@ class ItemManagement extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
+                Obx(() {
+                  return Visibility(
+                    visible: _itemManagementController.isLoading,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Loading Items',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(width: 5),
+                          SizedBox(
+                            child: CircularProgressIndicator(strokeWidth: 3),
+                            height: 15,
+                            width: 15,
+                          )
+                        ]),
+                  );
+                }),
                 Obx(() {
                   return Visibility(
                     visible: _itemManagementController.isSearching,

@@ -31,9 +31,16 @@ class StoreHouseApp extends StatelessWidget {
   GetMaterialApp _getMaterialApp() {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
+        title: 'STORE HOUSE',
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: GoogleFonts.nunitoTextTheme(),
+          primaryTextTheme: GoogleFonts.antonTextTheme().copyWith(
+            headline6: TextStyle(
+              color: Colors.white,
+              fontFamily: GoogleFonts.anton().fontFamily,
+            ),
+          ),
           primaryColor: Color(0xFF247BA0),
           accentColor: Color(0xFFF6FFF8),
         ),

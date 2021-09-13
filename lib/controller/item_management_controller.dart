@@ -12,6 +12,13 @@ class ItemManagementController extends GetxService {
   final StorageService _storageService = Get.find();
   List<Map<String, dynamic>> _items = <Map<String, dynamic>>[].obs;
   RxBool _isSearching = false.obs;
+  RxBool _isLoading = false.obs;
+
+  bool get isLoading => _isLoading.value;
+
+  set isLoading(bool value) {
+    _isLoading.value = value;
+  }
 
   bool get isSearching => _isSearching.value;
 

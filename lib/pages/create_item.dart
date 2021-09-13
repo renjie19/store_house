@@ -105,7 +105,7 @@ class _CreateItemState extends State<CreateItem> {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         enableInteractiveSelection: false,
                         validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
+                          // FormBuilderValidators.required(context),
                         ]),
                       ),
                     ),
