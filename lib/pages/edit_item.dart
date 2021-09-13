@@ -6,6 +6,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:store_house/controller/create_item_controller.dart';
 import 'package:store_house/util/notification_util.dart';
 import 'package:store_house/util/string_formatter.dart';
@@ -22,11 +23,6 @@ class _EditItemState extends State<EditItem> {
   final Map<String, dynamic> itemInfo = Get.arguments ?? {};
   final CreateItemController _createItemController = Get.find();
   bool hasBarcode = false;
-
-  final numberFormatter = NumberFormat('#,##0.00', 'en_US');
-
-  String numberTransformer(value) =>
-      value == null ? '0.00' : numberFormatter.format(double.parse(value));
 
   final inputDecoration = InputDecoration();
 
@@ -131,7 +127,6 @@ class _EditItemState extends State<EditItem> {
                     ]),
                   ),
                   FormBuilderTextField(
-                    maxLength: 8,
                     name: 'capital',
                     decoration: inputDecoration.copyWith(labelText: 'Capital'),
                     keyboardType: TextInputType.number,
@@ -140,14 +135,14 @@ class _EditItemState extends State<EditItem> {
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^\d+\.?\d{0,2}'))
                     ],
-                    valueTransformer: numberTransformer,
+                    valueTransformer: toNumberFormat,
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context),
-                      FormBuilderValidators.numeric(context)
+                      FormBuilderValidators.numeric(context),
+                      FormBuilderValidators.min(context, 1)
                     ]),
                   ),
                   FormBuilderTextField(
-                    maxLength: 8,
                     name: 'wholesale',
                     decoration:
                         inputDecoration.copyWith(labelText: 'Wholesale'),
@@ -157,14 +152,14 @@ class _EditItemState extends State<EditItem> {
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^\d+\.?\d{0,2}'))
                     ],
-                    valueTransformer: numberTransformer,
+                    valueTransformer: toNumberFormat,
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context),
-                      FormBuilderValidators.numeric(context)
+                      FormBuilderValidators.numeric(context),
+                      FormBuilderValidators.min(context, 1)
                     ]),
                   ),
                   FormBuilderTextField(
-                    maxLength: 8,
                     name: 'retail',
                     decoration: inputDecoration.copyWith(labelText: 'Retail'),
                     keyboardType: TextInputType.number,
@@ -173,10 +168,11 @@ class _EditItemState extends State<EditItem> {
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^\d+\.?\d{0,2}'))
                     ],
-                    valueTransformer: numberTransformer,
+                    valueTransformer: toNumberFormat,
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context),
-                      FormBuilderValidators.numeric(context)
+                      FormBuilderValidators.numeric(context),
+                      FormBuilderValidators.min(context, 1)
                     ]),
                   ),
                   SizedBox(height: 20),

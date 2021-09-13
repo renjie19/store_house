@@ -27,12 +27,12 @@ class _CreateItemState extends State<CreateItem> {
   final inputDecoration = InputDecoration();
 
   final numberFormatter = NumberFormat('#,##0.00', 'en_US');
+
   String numberTransformer(value) =>
       value == null ? '0.00' : numberFormatter.format(double.parse(value));
 
   void _clearBarcodeField() {
-    _formKey.currentState!
-        .patchValue({'barcodeId': ''});
+    _formKey.currentState!.patchValue({'barcodeId': ''});
     setState(() => hasBarcode = false);
   }
 
@@ -88,42 +88,40 @@ class _CreateItemState extends State<CreateItem> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: FormBuilderTextField(
-                        name: 'barcodeId',
-                        decoration: inputDecoration.copyWith(
-                            labelText: 'Item Barcode',
-                            suffixIcon: hasBarcode
-                                ? IconButton(
-                                    onPressed: _clearBarcodeField,
-                                    icon: Icon(FontAwesome5.times_circle))
-                                : SizedBox()),
-                        readOnly: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        enableInteractiveSelection: false,
-                        validator: FormBuilderValidators.compose([
-                          // FormBuilderValidators.required(context),
-                        ]),
+                Row(children: [
+                  Expanded(
+                    flex: 3,
+                    child: FormBuilderTextField(
+                      name: 'barcodeId',
+                      decoration: inputDecoration.copyWith(
+                          labelText: 'Item Barcode',
+                          suffixIcon: hasBarcode
+                              ? IconButton(
+                                  onPressed: _clearBarcodeField,
+                                  icon: Icon(FontAwesome5.times_circle))
+                              : SizedBox()),
+                      readOnly: true,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      enableInteractiveSelection: false,
+                      validator: FormBuilderValidators.compose([
+                        // FormBuilderValidators.required(context),
+                      ]),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    flex: 2,
+                    child: MaterialButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () => _scanBarCode(context),
+                      child: Text(
+                        'Scan Barcode',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      flex: 2,
-                      child: MaterialButton(
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () => _scanBarCode(context),
-                        child: Text(
-                          'Scan Barcode',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ]),
                 FormBuilderTextField(
                   name: 'itemName',
                   decoration: inputDecoration.copyWith(labelText: 'Item Name'),
@@ -135,7 +133,6 @@ class _CreateItemState extends State<CreateItem> {
                   ]),
                 ),
                 FormBuilderTextField(
-                  maxLength: 8,
                   name: 'capital',
                   decoration: inputDecoration.copyWith(labelText: 'Capital'),
                   keyboardType: TextInputType.number,
@@ -146,11 +143,11 @@ class _CreateItemState extends State<CreateItem> {
                   valueTransformer: numberTransformer,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context),
-                    FormBuilderValidators.numeric(context)
+                    FormBuilderValidators.numeric(context),
+                    FormBuilderValidators.min(context, 1)
                   ]),
                 ),
                 FormBuilderTextField(
-                  maxLength: 8,
                   name: 'wholesale',
                   decoration: inputDecoration.copyWith(labelText: 'Wholesale'),
                   keyboardType: TextInputType.number,
@@ -161,11 +158,11 @@ class _CreateItemState extends State<CreateItem> {
                   valueTransformer: numberTransformer,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context),
-                    FormBuilderValidators.numeric(context)
+                    FormBuilderValidators.numeric(context),
+                    FormBuilderValidators.min(context, 1)
                   ]),
                 ),
                 FormBuilderTextField(
-                  maxLength: 8,
                   name: 'retail',
                   decoration: inputDecoration.copyWith(labelText: 'Retail'),
                   keyboardType: TextInputType.number,
@@ -176,7 +173,8 @@ class _CreateItemState extends State<CreateItem> {
                   valueTransformer: numberTransformer,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(context),
-                    FormBuilderValidators.numeric(context)
+                    FormBuilderValidators.numeric(context),
+                    FormBuilderValidators.min(context, 1)
                   ]),
                 ),
                 SizedBox(height: 20),

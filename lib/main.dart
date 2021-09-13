@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ class StoreHouseApp extends StatelessWidget {
 
   GetMaterialApp _getMaterialApp() {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: !kReleaseMode,
         title: 'STORE HOUSE',
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,

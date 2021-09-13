@@ -5,6 +5,7 @@ import 'package:store_house/controller/item_details_controller.dart';
 import 'package:store_house/pages/edit_item.dart';
 import 'package:store_house/util/date_util.dart';
 import 'package:store_house/util/notification_util.dart';
+import 'package:store_house/util/string_formatter.dart';
 
 class ItemDetails extends StatefulWidget {
   static final String name = '/ITEM_CHECK';
@@ -123,7 +124,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         children: [
                           Text('Capital: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${_itemInfo['capital'] ?? '0.00'}',
+                            '${toCommaSeparatedNumber(_itemInfo['capital']) ?? '0.00'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
@@ -135,7 +136,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         children: [
                           Text('Wholesale: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${_itemInfo['wholesale'] ?? '0.00'}',
+                            '${toCommaSeparatedNumber(_itemInfo['wholesale']) ?? '0.00'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
@@ -147,7 +148,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         children: [
                           Text('Retail: ', style: TextStyle(fontSize: 22)),
                           Text(
-                            '${_itemInfo['retail'] ?? '0.00'}',
+                            '${toCommaSeparatedNumber(_itemInfo['retail']) ?? '0.00'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
