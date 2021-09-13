@@ -47,7 +47,10 @@ class Home extends StatelessWidget {
               onTap: () => Get.toNamed(Profile.name),
               child: Center(
                 child: _mainAppController.getCurrentUser()?.photoURL == null
-                    ? Icon(Typicons.user_outline, color: Colors.white)
+                    ? Container(
+                        margin: EdgeInsets.all(16),
+                        child: Icon(Typicons.user_outline, color: Colors.white),
+                      )
                     : Lottie.asset(
                         'assets/${_mainAppController.getCurrentUser()?.photoURL}.json',
                         height: 50,

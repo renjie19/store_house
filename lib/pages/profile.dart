@@ -43,9 +43,7 @@ class Profile extends StatelessWidget {
                   children: [
                     Center(
                       child: Lottie.asset(
-                        _mainAppController.getCurrentUser()!.photoURL!.isEmpty
-                            ? 'assets/salad-cat.json'
-                            : 'assets/${_mainAppController.getCurrentUser()?.photoURL}.json',
+                        'assets/${_mainAppController.getCurrentUser()?.photoURL ?? 'salad-cat'}.json',
                         width: 300,
                         height: 300,
                         fit: BoxFit.fill,
