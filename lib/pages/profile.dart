@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:store_house/config/project_build.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/service/auth_service.dart';
@@ -10,7 +11,8 @@ class Profile extends StatelessWidget {
   final AuthService _authService = Get.find();
   final MainAppController _mainAppController = Get.find();
 
-  final buttonTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black);
+  final buttonTextStyle =
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black);
 
   void _logOut() {
     _mainAppController.logOut();
@@ -30,25 +32,37 @@ class Profile extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
+                  child: Row(
                     children: [
-                      Text(
-                        _authService.currentUser?.displayName ?? '',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontFamily: GoogleFonts.anton().fontFamily,
-                          fontSize: 38,
-                          letterSpacing: 2,
-                          fontWeight: FontWeight.bold,
+                      Center(
+                        child: Lottie.asset(
+                          'assets/salad-cat.json',
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.fill,
                         ),
                       ),
-                      Text(
-                        _authService.currentUser?.email ?? '',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 18,
-                        ),
-                      ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _authService.currentUser?.displayName ?? '',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontFamily: GoogleFonts.anton().fontFamily,
+                                fontSize: 38,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              _authService.currentUser?.email ?? '',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ]),
                     ],
                   ),
                 ),
@@ -62,7 +76,9 @@ class Profile extends StatelessWidget {
                     onPressed: () {},
                     child: Text('Contact Us', style: buttonTextStyle),
                   ),
-                  Text('Version: ${ProjectBuild.appVersion}.${ProjectBuild.buildVersion}', style: buttonTextStyle),
+                  Text(
+                      'Version: ${ProjectBuild.appVersion}.${ProjectBuild.buildVersion}',
+                      style: buttonTextStyle),
                   TextButton(
                     onPressed: () => _mainAppController.logOut(),
                     child: Text('Terms and Conditions', style: buttonTextStyle),
@@ -73,7 +89,9 @@ class Profile extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () => _logOut(),
-                    child: Text('LOG OUT', style: buttonTextStyle.copyWith(color: Theme.of(context).errorColor)),
+                    child: Text('LOG OUT',
+                        style: buttonTextStyle.copyWith(
+                            color: Theme.of(context).errorColor)),
                   ),
                 ],
               ),
