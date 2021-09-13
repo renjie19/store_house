@@ -28,11 +28,12 @@ class ItemManagementController extends GetxService {
 
   List<Map<String, dynamic>> get items => _items;
 
-
   @override
   void onInit() async {
     super.onInit();
+    _isLoading.value = true;
     await getItems();
+    Future.delayed(Duration(seconds: 2), () => _isLoading.value = false);
   }
 
   Future<void> getItems() async {

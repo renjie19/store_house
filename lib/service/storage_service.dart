@@ -12,7 +12,7 @@ class StorageService extends GetxService {
 
   Future<void> addItem(item) async {
     try {
-      if(!item['barcodeId'].isEmpty) {
+      if (!item['barcodeId'].isEmpty) {
         await _barcodeExists(item['barcodeId']);
       } else {
         await _itemNameExists(item['itemName']);
@@ -34,18 +34,29 @@ class StorageService extends GetxService {
     }
   }
 
+  Future<void> _barcodeWithDocumentIdExists(
+      final String barcode, final String documentId) async {
+    var existingItemWithBarcode = await _itemCollection
+        .where('barcodeId', isEqualTo: barcode)
+        .where('documentId', isNotEqualTo: documentId)
+        .get();
+    if (existingItemWithBarcode.docs.isNotEmpty) {
+      throw 'Barcode already exists on another item';
+    }
+  }
+
   Future<void> _itemNameExists(final String itemName) async {
     var existingItemWithName =
         await _itemCollection.where('itemName', isEqualTo: itemName).get();
-    if(existingItemWithName.docs.isNotEmpty) {
+    if (existingItemWithName.docs.isNotEmpty) {
       throw 'Item with name already exists.';
     }
   }
 
   Future<Map<String, dynamic>> updateItem(item) async {
     final updatedItemWithTrail = addTrail(item, isNew: false);
-    if(!item['barcodeId'].isEmpty) {
-      await _barcodeExists(item['barcodeId']);
+    if (!item['barcodeId'].isEmpty) {
+      await _barcodeWithDocumentIdExists(item['barcodeId'], item['documentId']);
     } else {
       await _itemNameExists(item['itemName']);
     }
