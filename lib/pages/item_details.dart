@@ -97,7 +97,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Item Name: ', style: TextStyle(fontSize: 22)),
+                          Text('Item Name: ', style: TextStyle(fontSize: 22),),
                           Expanded(
                             child: Text(
                               '${_itemInfo['itemName'] ?? ''}',

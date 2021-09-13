@@ -25,51 +25,39 @@ class Profile extends StatelessWidget {
       child: Scaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              margin: EdgeInsets.all(24),
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Center(
-                        child: Lottie.asset(
-                          'assets/salad-cat.json',
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _authService.currentUser?.displayName ?? '',
-                              style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontFamily: GoogleFonts.anton().fontFamily,
-                                fontSize: 38,
-                                letterSpacing: 2,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              _authService.currentUser?.email ?? '',
-                              style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ]),
-                    ],
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Lottie.asset(
+                      'assets/salad-cat.json',
+                      width: 300,
+                      height: 300,
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
-              ),
-            ),
-            SizedBox(height: 40),
-            Expanded(
+                  Text(
+                    _authService.currentUser?.displayName ?? '',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontFamily: GoogleFonts.anton().fontFamily,
+                      fontSize: 38,
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    _authService.currentUser?.email ?? '',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ]),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 children: [
                   TextButton(

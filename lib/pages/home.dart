@@ -4,6 +4,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:store_house/config/project_build.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/item_details.dart';
@@ -42,9 +43,18 @@ class Home extends StatelessWidget {
             'STORE HOUSE',
           ),
           actions: [
-            IconButton(
-              onPressed: () => Get.toNamed(Profile.name),
-              icon: Icon(Typicons.user_outline, color: Colors.white),
+            GestureDetector(
+              onTap: () => Get.toNamed(Profile.name),
+              child: Center(
+                child: _mainAppController.getCurrentUser()?.photoURL == null
+                    ? Icon(Typicons.user_outline, color: Colors.white)
+                    : Lottie.asset(
+                        'assets/${_mainAppController.getCurrentUser()?.photoURL}.json',
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.fill,
+                      ),
+              ),
             )
           ],
         ),
@@ -52,23 +62,40 @@ class Home extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                MaterialButton(
-                  padding: EdgeInsets.all(16),
-                  onPressed: () => _startScan(context),
-                  child: Text('SCAN ITEM', style: fontStyle),
-                  color: Theme.of(context).primaryColor,
-                  elevation: 0,
+                Expanded(
+                  flex: 2,
+                  child: Lottie.asset(
+                    'assets/online-shopping.json',
+                    height: 300,
+                    width: 300,
+                    fit: BoxFit.fill,
+                  ),
                 ),
-                SizedBox(height: 16),
-                MaterialButton(
-                  padding: EdgeInsets.all(16),
-                  onPressed: () => Get.toNamed(ItemManagement.name),
-                  child: Text('MANAGE ITEMS', style: fontStyle),
-                  color: Theme.of(context).primaryColor,
-                  elevation: 0,
+                SizedBox(height: 60),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        MaterialButton(
+                          padding: EdgeInsets.all(16),
+                          onPressed: () => _startScan(context),
+                          child: Text('SCAN ITEM', style: fontStyle),
+                          color: Theme.of(context).primaryColor,
+                          elevation: 0,
+                        ),
+                        SizedBox(height: 16),
+                        MaterialButton(
+                          padding: EdgeInsets.all(16),
+                          onPressed: () => Get.toNamed(ItemManagement.name),
+                          child: Text('MANAGE ITEMS', style: fontStyle),
+                          color: Theme.of(context).primaryColor,
+                          elevation: 0,
+                        ),
+                      ]),
                 ),
               ],
             ),

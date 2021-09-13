@@ -20,15 +20,17 @@ class AuthService extends GetxService {
     return userCredential.user;
   }
 
-  Future<void> register(email, password, displayName) async {
+  Future<void> register(email, password, displayName, photoUrl) async {
     final UserCredential userCredential = await _auth
         .createUserWithEmailAndPassword(email: email, password: password);
     await userCredential.user!.updateDisplayName(displayName);
+    await userCredential.user!.updatePhotoURL(photoUrl);
   }
 
-  Future<void> updateUser({displayName = '', contactNumber = ''}) async {
+  Future<void> updateUser({displayName = '', contactNumber = '', photoUrl = ''}) async {
     await _auth.currentUser?.updateDisplayName(displayName);
     await _auth.currentUser?.updatePhoneNumber(contactNumber);
+    await _auth.currentUser?.updatePhotoURL(photoUrl);
   }
 
   Future<void> forgotPassword(email) async {

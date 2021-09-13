@@ -14,13 +14,24 @@ class MainAppBinding implements Bindings {
 class MainAppController extends GetxController {
   final AuthService _authService = Get.find();
   final StorageService _storageService = Get.find();
+  RxString _selectedAvatar = 'avatar-beard-man'.obs;
+
+  String get selectedAvatar => _selectedAvatar.value;
+
+  set selectedAvatar(String value) {
+    _selectedAvatar.value = value;
+  }
 
   Future<void> login(email, password) async {
     await _authService.login(email, password);
   }
 
-  Future<void> register(email, password, displayName) async {
-    await _authService.register(email, password, displayName);
+  Future<void> register(email, password, displayName, photoUrl) async {
+    await _authService.register(email, password, displayName, photoUrl);
+  }
+
+  User? getCurrentUser() {
+    return _authService.currentUser;
   }
 
   void logOut() {

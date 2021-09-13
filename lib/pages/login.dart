@@ -4,6 +4,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/register.dart';
 import 'package:store_house/util/notification_util.dart';
@@ -51,14 +52,22 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                child: Text(
-                  'STORE\n        HOUSE',
-                  style: TextStyle(
-                      fontSize: 64,
-                      fontWeight: FontWeight.w900,
-                      color: Theme.of(context).primaryColor),
-                ),
+                child: Lottie.asset(
+                  'assets/login-animation.json',
+                  height: 200,
+                  width: 200,
+                  fit: BoxFit.fill,
+                )
               ),
+              // Center(
+              //   child: Text(
+              //     'STORE\n        HOUSE',
+              //     style: TextStyle(
+              //         fontSize: 64,
+              //         fontWeight: FontWeight.w900,
+              //         color: Theme.of(context).primaryColor),
+              //   ),
+              // ),
               SizedBox(height: 20),
               Card(
                 elevation: 0,
@@ -66,20 +75,20 @@ class _LoginState extends State<Login> {
                 child: Padding(
                   padding: EdgeInsets.all(16),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      FormBuilderTextField(
-                        style: TextStyle(color: Colors.white),
-                        name: 'email',
-                        decoration:
-                            inputDecoration.copyWith(labelText: 'Email'),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.email(context)
-                        ]),
-                      ),
-                      FormBuilderTextField(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        FormBuilderTextField(
+                          style: TextStyle(color: Colors.white),
+                          name: 'email',
+                          decoration:
+                              inputDecoration.copyWith(labelText: 'Email'),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.email(context)
+                          ]),
+                        ),
+                        FormBuilderTextField(
                           style: TextStyle(color: Colors.white),
                           name: 'password',
                           obscureText: !_visible,
@@ -107,9 +116,9 @@ class _LoginState extends State<Login> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
-                          ]))
-                    ],
-                  ),
+                          ]),
+                        )
+                      ]),
                 ),
               ),
               SizedBox(height: 20),
