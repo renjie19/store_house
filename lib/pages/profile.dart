@@ -5,7 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:store_house/config/project_build.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/edit_profile.dart';
-import 'package:store_house/service/auth_service.dart';
 import 'package:store_house/util/notification_util.dart';
 
 class Profile extends StatelessWidget {

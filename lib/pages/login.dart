@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:store_house/controller/main_app_controller.dart';
 import 'package:store_house/pages/register.dart';
+import 'package:store_house/util/loading_util.dart';
 import 'package:store_house/util/notification_util.dart';
 
 class Login extends StatefulWidget {
@@ -29,7 +30,7 @@ class _LoginState extends State<Login> {
   _login(BuildContext context) async {
     try {
       if (_formKey.currentState!.saveAndValidate()) {
-        Loader.show(context);
+        LoadingUtil.show(context);
         var data = _formKey.currentState!.value;
         print(data);
         await _mainAppController.login(data['email'], data['password']);
@@ -37,7 +38,7 @@ class _LoginState extends State<Login> {
     } on String catch (e) {
       showErrorMessage(e);
     } finally {
-      Loader.hide();
+      LoadingUtil.hide();
     }
   }
 

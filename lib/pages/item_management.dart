@@ -7,6 +7,7 @@ import 'package:fluttericon/typicons_icons.dart';
 import 'package:get/get.dart';
 import 'package:store_house/controller/item_management_controller.dart';
 import 'package:store_house/pages/create_item.dart';
+import 'package:store_house/util/loading_util.dart';
 import 'package:store_house/util/notification_util.dart';
 import 'package:store_house/util/string_formatter.dart';
 
@@ -33,8 +34,7 @@ class ItemManagement extends StatelessWidget {
 
   Future<void> _toCreateItem(BuildContext context) async {
     try {
-      Get.toNamed(CreateItem.name)
-          ?.then((value) async => await _loadItems(context));
+      Get.toNamed(CreateItem.name)?.then((value) async => _checkResultAndReload(context, value));
     } catch (e) {
       showErrorMessage(e);
     }
@@ -50,7 +50,7 @@ class ItemManagement extends StatelessWidget {
             await _itemManagementController.findItemByBarcode(barcode);
         Get.toNamed(ItemDetails.name,
                 arguments: {'item': result, 'isEdit': true})
-            ?.then((value) async => await _loadItems(context));
+            ?.then((value) async => _checkResultAndReload(context, value));
       }
     } catch (e) {
       showErrorMessage(e);
@@ -62,7 +62,7 @@ class ItemManagement extends StatelessWidget {
   void _toEditItemPage(context, item) {
     try {
       Get.toNamed(ItemDetails.name, arguments: {'item': item, 'isEdit': true})
-          ?.then((value) async => await _loadItems(context));
+          ?.then((value) async => _checkResultAndReload(context, value));
     } catch (e) {
       showErrorMessage(e);
     }
@@ -70,7 +70,7 @@ class ItemManagement extends StatelessWidget {
 
   Future<void> _searchItemByName(BuildContext context) async {
     try {
-      Loader.show(context);
+      LoadingUtil.show(context);
       if (_formKey.currentState!.saveAndValidate()) {
         await _itemManagementController
             .findItemsByName(_formKey.currentState!.value['itemName']);
@@ -79,7 +79,15 @@ class ItemManagement extends StatelessWidget {
     } catch (e) {
       showErrorMessage(e);
     } finally {
-      Loader.hide();
+      LoadingUtil.hide();
+    }
+  }
+
+  void _checkResultAndReload(BuildContext context, value) {
+    if(value != null && (value as String).isNotEmpty) {
+      if(value == 'create' || value == 'update' || value == 'delete') {
+        _loadItems(context);
+      }
     }
   }
 

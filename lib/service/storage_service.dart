@@ -28,14 +28,14 @@ class StorageService extends GetxService {
 
   Future<void> _barcodeExists(final String barcode) async {
     var existingItemWithBarcode =
-        await _itemCollection.where('barcodeId', isEqualTo: barcode).get();
+    await _itemCollection.where('barcodeId', isEqualTo: barcode).get();
     if (existingItemWithBarcode.docs.isNotEmpty) {
       throw 'Barcode already exists';
     }
   }
 
-  Future<void> _barcodeWithDocumentIdExists(
-      final String barcode, final String documentId) async {
+  Future<void> _barcodeWithDocumentIdExists(final String barcode,
+      final String documentId) async {
     var existingItemWithBarcode = await _itemCollection
         .where('barcodeId', isEqualTo: barcode)
         .where('documentId', isNotEqualTo: documentId)
@@ -47,7 +47,7 @@ class StorageService extends GetxService {
 
   Future<void> _itemNameExists(final String itemName) async {
     var existingItemWithName =
-        await _itemCollection.where('itemName', isEqualTo: itemName).get();
+    await _itemCollection.where('itemName', isEqualTo: itemName).get();
     if (existingItemWithName.docs.isNotEmpty) {
       throw 'Item with name already exists.';
     }
@@ -83,23 +83,27 @@ class StorageService extends GetxService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> findItemsByName(itemName) async {
+  Future<List<Map<String, dynamic>>> findItemsByName(String itemName) async {
     print(itemName);
-    final results = await _itemCollection
-        .orderBy('itemName')
-        .startAt([itemName]).endAt([itemName + '\uf8ff']).get();
-    print(results.docs);
-    return results.docs.map((e) => e.data()).toList();
+    final results = await _itemCollection.orderBy('itemName').get();
+    final filteredResults = results.docs.where((element) =>
+        (element.data()['itemName'] as String).toLowerCase().contains(
+            itemName.toLowerCase()));
+    return filteredResults.map((e) => e.data()).toList();
   }
 
   Map<String, dynamic> addTrail(data, {isNew = true}) {
     final dataWithTrail = new Map<String, dynamic>.from(data);
     if (isNew) {
-      dataWithTrail['dateCreated'] = DateTime.now().millisecondsSinceEpoch;
+      dataWithTrail['dateCreated'] = DateTime
+          .now()
+          .millisecondsSinceEpoch;
       dataWithTrail['createdBy'] =
           _auth.currentUser!.displayName ?? _auth.currentUser!.email;
     }
-    dataWithTrail['dateModified'] = DateTime.now().millisecondsSinceEpoch;
+    dataWithTrail['dateModified'] = DateTime
+        .now()
+        .millisecondsSinceEpoch;
     dataWithTrail['modifiedBy'] =
         _auth.currentUser!.displayName ?? _auth.currentUser!.email;
     return dataWithTrail;

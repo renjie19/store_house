@@ -3,5 +3,6 @@ const List<String> AVATAR_FILE_NAMES = [
   'avatar-girl',
   'male-avatar',
   'female-avatar',
-  'salad-cat'
+  'salad-cat',
+  'wave-wizard',
 ];
