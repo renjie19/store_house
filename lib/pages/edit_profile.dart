@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:store_house/components/text_input.dart';
 import 'package:store_house/config/avatar_file_names.dart';
 import 'package:store_house/controller/edit_profile_controller.dart';
+import 'package:store_house/util/loading_util.dart';
 import 'package:store_house/util/notification_util.dart';
 import 'package:store_house/util/string_formatter.dart';
 
@@ -16,7 +17,7 @@ class EditProfile extends StatelessWidget {
 
   Future<void> _updateProfile(BuildContext context) async {
     try {
-      Loader.show(context);
+      LoadingUtil.show(context);
       if (_formKey.currentState!.saveAndValidate()) {
         var data = _formKey.currentState!.value;
         await _editProfileController.updateProfile(data);
@@ -26,7 +27,7 @@ class EditProfile extends StatelessWidget {
     } catch (e) {
       showErrorMessage(e);
     } finally {
-      Loader.hide();
+      LoadingUtil.hide();
     }
   }
 
